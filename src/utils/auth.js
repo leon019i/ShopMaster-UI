@@ -7,44 +7,63 @@ import Cookies from "js-cookie";
 
 export const login = async (email, password) => {
     try {
-        const { data, status } = await axios.post("user/token", {
-            email,
-            password,
-        })
+        const response = await axios.post("user/token/", { email, password });
 
+        if (response && response.data && response.status === 200) {
+            const { data } = response;
+            setAuthUser(data.access, data.refresh);
 
-        if (status === 200) {
-            setAuthUser(data.access, data.refresh)
-
-            // Allert - Sign In Successfully
+            // Alert - Sign In Successfully
+            return { data, error: null };
+        } else {
+            throw new Error('Unexpected response structure');
         }
-        return { data, error: null }
-    }
-    catch (error) {
+    } catch (error) {
+        console.log("Login error:", error);
+
         return {
             data: null,
-            error: error.response.data?.detail || 'Something went wrong'
-        }
+            error: error.response?.data?.detail || error.message || 'Something went wrong'
+        };
     }
-
 }
+
+// export const register = async (full_name, email, phone, password, password2) => {
+//     try {
+//         const { data } = await axios.post('user/register/', {
+//             full_name, email, phone, password, password2
+//         })
+//         await login(email, password)
+//         // Alert - Signed Up Successfully
+//         return { data, error: null }
+//     }
+//     catch (error) {
+//         return {
+//             data: null,
+//             error: error.response?.data?.detail || 'Something went wrong'
+//         }
+//     }
+// }
+
 
 export const register = async (full_name, email, phone, password, password2) => {
     try {
-        const { data } = await axios.post('user/register', {
+        const { data } = await axios.post('user/register/', {
             full_name, email, phone, password, password2
-        })
-        await login(email, password)
-        // Alert - Signed Up Successfully
-        return { data, error: null }
-    }
-    catch (error) {
+        });
+
+        await login(email, password);
+
+        return { data, error: null };
+    } catch (error) {
+        console.error('Registration error:', error.response?.data || error.message);
+
         return {
             data: null,
-            error: error.response.data?.detail || 'Something went wrong'
-        }
+            error: error.response?.data?.detail || 'Something went wrong'
+        };
     }
-}
+};
 
 export const logout = () => {
     Cookies.remove("access_token")
@@ -85,7 +104,7 @@ export const setAuthUser = (access_token, refresh_token) => {
     if (user) {
         userAuthStore.getState().setUser(user)
     }
-    userAuthStore.getState().setloading(false)
+    userAuthStore.getState().setLoading(false)
 }
 
 
