@@ -1,0 +1,1 @@
+export const BASE_URL = 'https://markets-1-feb6481cd665.herokuapp.com/api/v1/'
