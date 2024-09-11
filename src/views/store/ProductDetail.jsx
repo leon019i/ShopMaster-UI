@@ -38,10 +38,9 @@ function ProductDetail() {
       setColors(data.color || []);
       setSizes(data.size || []);
     });
-  }, [param.slug]);
+  }, []);
 
-  // console.log(sizes);
-  // console.log(colors);
+
   const handleColorButtonClick = (colorName) => {
     // const colorNameInput = event.target.closest('.color_button').parentNode.querySelector(".color_name")
     // console.log(colorNameInput);
