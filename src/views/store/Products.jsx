@@ -4,6 +4,16 @@ import { Link } from 'react-router-dom';
 import GetCurrentAddress from '../plugin/UserCountry';
 import UserData from '../plugin/UserData';
 import CardID from '../plugin/CardID';
+import Swal from 'sweetalert2';
+
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top",
+  showConfirmButton: false,
+  timer: 2500,
+  timerProgressBar: true
+})
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -82,6 +92,10 @@ function Products() {
     try {
       const response = await apiInstance.post('cart-view/', formData);
       console.log('Response:', response.data);
+      Swal.fire({
+        icon: "success",
+        title: response.data.message
+      })
     } catch (error) {
       console.error('Error adding to cart:', error);
     }

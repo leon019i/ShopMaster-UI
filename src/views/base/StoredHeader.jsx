@@ -1,12 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { userAuthStore } from '../../store/auth'
+
 
 function StoredHeader() {
+    const [isLoggedIn, user] = userAuthStore((state) => [
+        state.isLoggedIn,
+        state.user,
+    ])
+
+    // console.log(user());
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container">
-                    <Link className="navbar-brand" to="/">My Shop </Link>
+                    <Link className="navbar-brand" to="/">Markets</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon" />
                     </button>
@@ -48,27 +57,27 @@ function StoredHeader() {
                             <input name='search' className="form-control me-2" type="text" placeholder="Search" aria-label="Search" />
                             <button className="btn btn-outline-success me-2" type="submit">Search</button>
                         </div>
-                        <Link className="btn btn-primary me-2" to="/login">Login</Link>
-                        <Link className="btn btn-primary me-2" to="/register">Register</Link>
+                        {/* <Link className="btn btn-primary me-2" to="/login">Login</Link>
+                        <Link className="btn btn-primary me-2" to="/register">Register</Link> */}
 
 
                         {/* These are the button rendered based on users logged in status */}
                         {/* You could just un-comment it ;) */}
 
-                        {/* {isLoggedIn()
-                    ?
-                    <>
-                        <Link className="btn btn-primary me-2" to={'/customer/account/'}>Account</Link>
-                        <Link className="btn btn-primary me-2" to="/logout">Logout</Link>
-                    </>
-                    :
-                    <>
-                        <Link className="btn btn-primary me-2" to="/login">Login</Link>
-                        <Link className="btn btn-primary me-2" to="/register">Register</Link>
+                        {isLoggedIn()
+                            ?
+                            <>
+                                <Link className="btn btn-primary me-2" to={'/customer/account/'}>Account</Link>
+                                <Link className="btn btn-primary me-2" to="/logout">Logout</Link>
+                            </>
+                            :
+                            <>
+                                <Link className="btn btn-primary me-2" to="/login">Login</Link>
+                                <Link className="btn btn-primary me-2" to="/register">Register</Link>
 
-                    </>
-                } */}
-                        {/* <Link className="btn btn-danger" to="/cart/"><i className='fas fa-shopping-cart'></i> <span id='cart-total-items'>{cartCount || 0}</span></Link> */}
+                            </>
+                        }
+                        <Link className="btn btn-danger" to="/cart/"><i className='fas fa-shopping-cart'></i> <span id='cart-total-items'></span></Link>
 
                     </div>
                 </div>

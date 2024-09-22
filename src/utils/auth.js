@@ -3,7 +3,15 @@ import { userAuthStore } from "../store/auth";
 import axios from './axios'
 import jwt_decode from 'jwt-decode'
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
+const Toast = Swal.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 2500,
+    timerProgressBar: true
+})
 
 export const login = async (email, password) => {
     try {
@@ -12,11 +20,16 @@ export const login = async (email, password) => {
         if (response && response.data && response.status === 200) {
             const { data } = response;
             setAuthUser(data.access, data.refresh);
+            Toast.fire({
+                icon: "success",
+                title: "Login Successfull"
 
+            })
             // Alert - Sign In Successfully
             return { data, error: null };
         } else {
             throw new Error('Unexpected response structure');
+
         }
     } catch (error) {
         console.log("Login error:", error);
@@ -53,7 +66,11 @@ export const register = async (full_name, email, phone, password, password2) => 
         });
 
         await login(email, password);
+        Toast.fire({
+            icon: "success",
+            title: "Account Created Successfully"
 
+        })
         return { data, error: null };
     } catch (error) {
         console.error('Registration error:', error.response?.data || error.message);
